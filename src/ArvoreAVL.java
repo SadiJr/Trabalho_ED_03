@@ -23,9 +23,8 @@ public class ArvoreAVL {
 			}else {
 				insere(dado, raiz.getFilhoEsquerdo());
 			}
-			
 			raiz.setAltura(raiz.getAltura() - 1);
-					//Lembrar de verificar o balanceamento
+			balanceamento(raiz);
 		}else if(dado > raiz.getDado()) {
 			
 			if(raiz.getFilhoDireito() == null) {
@@ -33,9 +32,8 @@ public class ArvoreAVL {
 			}else {
 				insere(dado, raiz.getFilhoDireito());
 			}
-			
 			raiz.setAltura(raiz.getAltura() + 1);
-		
+			balanceamento(raiz);
 		}else {
 			throw new Exception("O dado já existe na árvore!");
 		}
@@ -66,8 +64,6 @@ public class ArvoreAVL {
 				raiz.setFilhoDireito(subArvoreDireita);
 				raiz.setFilhoEsquerdo(subArvoreEsquerda);
 			}
-			//Continuar o método depois
-			//Lembrar de verificar se o nó a ser excluído tem filhos
 			//Lembrar de fazer a verificação do balanceamento
 		}else {
 			if(dado > raiz.getDado()) {
@@ -98,7 +94,11 @@ public class ArvoreAVL {
 			novaRaiz = raiz.getFilhoDireito();
 			if(raiz.getFilhoDireito().getFilhoEsquerdo() != null) {
 				raiz.setFilhoDireito(raiz.getFilhoDireito().getFilhoEsquerdo());
+				novaRaiz.setFilhoEsquerdo(null);
+			}else {
+				raiz.setFilhoDireito(null);
 			}
+			//raiz.setAltura(raiz.getAltura() - 1);
 			return novaRaiz;
 		}else {
 			return getAntecessorImediato(raiz.getFilhoDireito());
@@ -125,52 +125,91 @@ public class ArvoreAVL {
 		}
 	}
 	
-	private void balanceamento(No raiz) {
-		if(raiz.getAltura() == -2) {
+	private void balanceamento(No no) {
+		if(no.getAltura() == -2) {
 			if(raiz.getFilhoEsquerdo().getAltura() == -1) {
-				giroCompletoEsquerda(raiz);
+				giroCompletoEsquerda(no);
 			}else {
-				giroParcialEsquerda(raiz);
-				giroCompletoEsquerda(raiz);
+				giroParcialEsquerda(no);
+				giroCompletoEsquerda(no);
 			}
-		}else if(raiz.getAltura() == 2) {
-			if(raiz.getFilhoDireito().getAltura() == -1) {
-				giroParcialDireita(raiz);
-				giroCompletoDireita(raiz);
+		}else if(no.getAltura() == 2) {
+			if(no.getFilhoDireito().getAltura() == -1) {
+				giroParcialDireita(no);
+				giroCompletoDireita(no);
 			}else {
-				giroCompletoDireita(raiz);
+				giroCompletoDireita(no);
 			}
 		}
 	}
 	
-	private void giroCompletoEsquerda(No raiz) {
-		No filhoDireito = raiz;
-		No filhoEsquerdo = raiz.getFilhoEsquerdo().getFilhoEsquerdo();
-		raiz = raiz.getFilhoEsquerdo();
-		raiz.setFilhoDireito(filhoDireito);
-		raiz.setFilhoEsquerdo(filhoEsquerdo);
+	private void giroCompletoEsquerda(No no) {
+		No filhoDireito = no;
+		filhoDireito.setAltura(0);
+		No filhoEsquerdo = no.getFilhoEsquerdo().getFilhoEsquerdo();
+		filhoEsquerdo.setAltura(0);
+		no = no.getFilhoEsquerdo();
+		filhoDireito.setFilhoEsquerdo(null);
+		no.setFilhoDireito(filhoDireito);
+		no.setFilhoEsquerdo(filhoEsquerdo);
+		no.setAltura(0);
 	}
 	
-	private void giroParcialEsquerda(No raiz) {
-		No filhoEsquerda = raiz.getFilhoEsquerdo().getFilhoDireito();
-		No neto = raiz.getFilhoEsquerdo();
-		raiz.setFilhoEsquerdo(filhoEsquerda);
-		raiz.getFilhoEsquerdo().setFilhoEsquerdo(neto);
+	private void giroParcialEsquerda(No no) {
+		No filhoEsquerda = no.getFilhoEsquerdo().getFilhoDireito();
+		No neto = no.getFilhoEsquerdo();
+		filhoEsquerda.setAltura(0);
+		neto.setAltura(0);
+		neto.setFilhoDireito(null);
+		no.setFilhoEsquerdo(filhoEsquerda);
+		no.getFilhoEsquerdo().setFilhoEsquerdo(neto);
+		no.setAltura(0);
 	}
 	
-	private void giroCompletoDireita(No raiz) {
-		No filhoEsquerdo = raiz;
-		No filhoDireito = raiz.getFilhoDireito().getFilhoDireito();
-		raiz = raiz.getFilhoDireito();
-		raiz.setFilhoDireito(filhoDireito);
-		raiz.setFilhoEsquerdo(filhoEsquerdo);
+	private void giroCompletoDireita(No no) {
+		No filhoEsquerdo = no;
+		No filhoDireito = no.getFilhoDireito().getFilhoDireito();
+		no = no.getFilhoDireito();
+		filhoEsquerdo.setAltura(0);
+		filhoEsquerdo.setFilhoDireito(null);
+		filhoDireito.setAltura(0);
+		no.setFilhoDireito(filhoDireito);
+		no.setFilhoEsquerdo(filhoEsquerdo);
+		no.setAltura(0);
 	}
 	
-	private void giroParcialDireita(No raiz) {
-		No filhoDireito = raiz.getFilhoDireito().getFilhoEsquerdo();
-		No neto = raiz.getFilhoDireito();
-		raiz.setFilhoDireito(filhoDireito);
-		raiz.getFilhoDireito().setFilhoDireito(neto);
+	private void giroParcialDireita(No no) {
+		No filhoDireito = no.getFilhoDireito().getFilhoEsquerdo();
+		No neto = no.getFilhoDireito();
+		neto.setFilhoEsquerdo(null);
+		no.setFilhoDireito(filhoDireito);
+		no.getFilhoDireito().setFilhoDireito(neto);
+		filhoDireito.setAltura(1);
+		neto.setAltura(0);
+	}
+	
+	public void listarArvore() {
+		if(raiz == null) {
+			System.out.println("Árvore vazia");
+			return;
+		}
+		
+		String separador = String.valueOf("  |__");
+		System.out.println(raiz.getDado() + "(" + raiz.getAltura() + ")");
+		listarSubArvore(raiz, raiz.getFilhoEsquerdo(),  separador);
+		listarSubArvore(raiz, raiz.getFilhoDireito(), separador);
+	}
+	
+	private void listarSubArvore(No raiz, No raizLista, String separador) {
+		if(raizLista != null) {
+			if(raizLista.getDado() < raiz.getDado()) {
+				System.out.println(separador + raizLista.getDado()+"("+raizLista.getAltura()+")"+" (ESQ)");
+			}else {
+				System.out.println(separador+raizLista.getDado()+"("+raizLista.getAltura()+")"+" (DIR)");
+			}
+			listarSubArvore(raizLista, raizLista.getFilhoEsquerdo(),  "     "+separador);
+			listarSubArvore(raizLista, raizLista.getFilhoDireito(), "     "+separador);
+		}
 	}
 	//Implementar operações de balanceamento depois
 	// Temos um pequeno problema: eu não lembro como é
