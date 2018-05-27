@@ -52,9 +52,19 @@ public class ArvoreAVL {
 		
 		if(raiz.getDado() == dado) {
 			if(possuiDoisFilhos(raiz)) {
-				raiz = getAntecessorImediato(raiz);
+				No novaRaiz = getAntecessorImediato(raiz);
+				No subArvoreEsquerda = raiz.getFilhoEsquerdo();
+				No subArvoreDireita = raiz.getFilhoDireito();
+				raiz = novaRaiz;
+				raiz.setFilhoDireito(subArvoreDireita);
+				raiz.setFilhoEsquerdo(subArvoreEsquerda);
 			}else {
-				raiz = queFilhoPossui(raiz);
+				No novaRaiz = queFilhoPossui(raiz);
+				No subArvoreEsquerda = raiz.getFilhoEsquerdo();
+				No subArvoreDireita = raiz.getFilhoDireito();
+				raiz = novaRaiz;
+				raiz.setFilhoDireito(subArvoreDireita);
+				raiz.setFilhoEsquerdo(subArvoreEsquerda);
 			}
 			//Continuar o método depois
 			//Lembrar de verificar se o nó a ser excluído tem filhos
@@ -83,8 +93,13 @@ public class ArvoreAVL {
 	}
 	
 	private No getAntecessorImediato(No raiz) {
-		if(raiz.getFilhoDireito() == null) {
-			return raiz;
+		No novaRaiz = null;
+		if(raiz.getFilhoDireito().getFilhoDireito() == null) {
+			novaRaiz = raiz.getFilhoDireito();
+			if(raiz.getFilhoDireito().getFilhoEsquerdo() != null) {
+				raiz.setFilhoDireito(raiz.getFilhoDireito().getFilhoEsquerdo());
+			}
+			return novaRaiz;
 		}else {
 			return getAntecessorImediato(raiz.getFilhoDireito());
 		}
