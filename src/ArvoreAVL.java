@@ -6,6 +6,19 @@ public class ArvoreAVL {
 		raiz = null;
 	}
 	
+	private int getAltura(No raiz) {
+		if(raiz.getFilhoDireito() == null && raiz.getFilhoEsquerdo() == null) {
+			return 1;
+		}else if(raiz.getFilhoDireito() != null && raiz.getFilhoEsquerdo() != null) {
+			return Math.max(getAltura(raiz.getFilhoDireito()), getAltura(raiz.getFilhoEsquerdo()));
+			//return Math.max(raiz.getFilhoDireito().getAltura(), raiz.getFilhoEsquerdo().getAltura());
+		}else if(raiz.getFilhoDireito() != null) {
+			return raiz.getFilhoDireito().getAltura() + 1;
+		}else {
+			return raiz.getFilhoEsquerdo().getAltura() - 1;
+		}
+	}
+	
 	public void insere(int dado) throws Exception {
 		if(this.raiz == null) {
 			this.raiz = new No(dado);
@@ -23,7 +36,7 @@ public class ArvoreAVL {
 			}else {
 				no.setFilhoEsquerdo(insere(dado, no.getFilhoEsquerdo()));
 			}
-			no.setAltura(no.getAltura() - 1);
+			no.setAltura(getAltura(no));
 			no = balanceamento(no);
 			return no;
 		}else if(dado > no.getDado()) {
@@ -31,9 +44,9 @@ public class ArvoreAVL {
 			if(no.getFilhoDireito() == null) {
 				no.setFilhoDireito(new No(dado));
 			}else {
-				 no.setFilhoDireito(insere(dado, no.getFilhoDireito()));
+				no.setFilhoDireito(insere(dado, no.getFilhoDireito()));
 			}
-			no.setAltura(no.getAltura() + 1);
+			no.setAltura(getAltura(no));
 			no = balanceamento(no);
 			return no;
 		}else {
@@ -133,13 +146,11 @@ public class ArvoreAVL {
 			if(no.getFilhoEsquerdo().getAltura() == -1) {
 				no = giroCompletoEsquerda(no);
 			}else {
-				no = giroParcialEsquerda(no);
-				no = giroCompletoEsquerda(no);
+				no = giroCompletoEsquerda(giroParcialEsquerda(no));
 			}
 		}else if(no.getAltura() == 2) {
 			if(no.getFilhoDireito().getAltura() == -1) {
-				no = giroParcialDireita(no);
-				no = giroCompletoDireita(no);
+				no = giroCompletoDireita(giroParcialDireita(no));
 			}else {
 				no = giroCompletoDireita(no);
 			}
@@ -168,11 +179,11 @@ public class ArvoreAVL {
 	
 	private No giroCompletoDireita(No no) {
 		No novoNo = no.getFilhoDireito();
+		no.setFilhoDireito(null);
 		novoNo.setFilhoEsquerdo(no);
 		novoNo.setFilhoDireito(novoNo.getFilhoDireito());
 		novoNo.setAltura(0);
 		novoNo.getFilhoEsquerdo().setAltura(0);
-		novoNo.getFilhoEsquerdo().setFilhoDireito(null);
 		return novoNo;
 	}
 	

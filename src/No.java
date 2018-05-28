@@ -43,7 +43,4 @@ public class No {
 	public void setFilhoDireito(No filhoDireito) {
 		this.filhoDireito = filhoDireito;
 	}
-	
-	
-
 }
