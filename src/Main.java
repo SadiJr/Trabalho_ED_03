@@ -11,8 +11,6 @@ public class Main {
 	        t.insere(5);
 	        t.insere(6);
 	        t.insere(7);
-	        t.insere(8);
-	        t.insere(9);
 	        t.listarArvore();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

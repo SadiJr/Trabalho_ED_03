@@ -7,36 +7,39 @@ public class ArvoreAVL {
 	}
 	
 	public void insere(int dado) throws Exception {
-		if(raiz == null) {
-			raiz = new No(dado);
+		if(this.raiz == null) {
+			this.raiz = new No(dado);
 		}else {
-			insere(dado, raiz);
+			this.raiz = insere(dado, this.raiz);
 		}
 	}
 		
-	private void insere(int dado, No raiz) throws Exception {
+	private No insere(int dado, No no) throws Exception {
 		
-		if(dado < raiz.getDado()) {
+		if(dado < no.getDado()) {
 			
-			if(raiz.getFilhoEsquerdo() == null) {
-				raiz.setFilhoEsquerdo(new No(dado));
+			if(no.getFilhoEsquerdo() == null) {
+				no.setFilhoEsquerdo(new No(dado));
 			}else {
-				insere(dado, raiz.getFilhoEsquerdo());
+				no.setFilhoEsquerdo(insere(dado, no.getFilhoEsquerdo()));
 			}
-			raiz.setAltura(raiz.getAltura() - 1);
-			balanceamento(raiz);
-		}else if(dado > raiz.getDado()) {
+			no.setAltura(no.getAltura() - 1);
+			no = balanceamento(no);
+			return no;
+		}else if(dado > no.getDado()) {
 			
-			if(raiz.getFilhoDireito() == null) {
-				raiz.setFilhoDireito(new No(dado));
+			if(no.getFilhoDireito() == null) {
+				no.setFilhoDireito(new No(dado));
 			}else {
-				insere(dado, raiz.getFilhoDireito());
+				 no.setFilhoDireito(insere(dado, no.getFilhoDireito()));
 			}
-			raiz.setAltura(raiz.getAltura() + 1);
-			balanceamento(raiz);
+			no.setAltura(no.getAltura() + 1);
+			no = balanceamento(no);
+			return no;
 		}else {
 			throw new Exception("O dado já existe na árvore!");
 		}
+		
 	}
 	
 	public void exclui(int dado) throws Exception {
@@ -125,67 +128,61 @@ public class ArvoreAVL {
 		}
 	}
 	
-	private void balanceamento(No no) {
+	private No balanceamento(No no) {
 		if(no.getAltura() == -2) {
-			if(raiz.getFilhoEsquerdo().getAltura() == -1) {
-				giroCompletoEsquerda(no);
+			if(no.getFilhoEsquerdo().getAltura() == -1) {
+				no = giroCompletoEsquerda(no);
 			}else {
-				giroParcialEsquerda(no);
-				giroCompletoEsquerda(no);
+				no = giroParcialEsquerda(no);
+				no = giroCompletoEsquerda(no);
 			}
 		}else if(no.getAltura() == 2) {
 			if(no.getFilhoDireito().getAltura() == -1) {
-				giroParcialDireita(no);
-				giroCompletoDireita(no);
+				no = giroParcialDireita(no);
+				no = giroCompletoDireita(no);
 			}else {
-				giroCompletoDireita(no);
+				no = giroCompletoDireita(no);
 			}
 		}
+		return no;
 	}
 	
-	private void giroCompletoEsquerda(No no) {
-		No filhoDireito = no;
-		filhoDireito.setAltura(0);
-		No filhoEsquerdo = no.getFilhoEsquerdo().getFilhoEsquerdo();
-		filhoEsquerdo.setAltura(0);
-		no = no.getFilhoEsquerdo();
-		filhoDireito.setFilhoEsquerdo(null);
-		no.setFilhoDireito(filhoDireito);
-		no.setFilhoEsquerdo(filhoEsquerdo);
-		no.setAltura(0);
+	private No giroCompletoEsquerda(No no) {
+		No novoNo = no.getFilhoEsquerdo();
+		novoNo.setFilhoDireito(no);
+		novoNo.setFilhoEsquerdo(no.getFilhoEsquerdo().getFilhoEsquerdo());
+		novoNo.setAltura(0);
+		novoNo.getFilhoDireito().setAltura(0);
+		novoNo.getFilhoDireito().setFilhoEsquerdo(null);
+		return novoNo;
 	}
 	
-	private void giroParcialEsquerda(No no) {
+	private No giroParcialEsquerda(No no) {
+		No novoNo = no;
 		No filhoEsquerda = no.getFilhoEsquerdo().getFilhoDireito();
 		No neto = no.getFilhoEsquerdo();
-		filhoEsquerda.setAltura(0);
-		neto.setAltura(0);
-		neto.setFilhoDireito(null);
-		no.setFilhoEsquerdo(filhoEsquerda);
-		no.getFilhoEsquerdo().setFilhoEsquerdo(neto);
-		no.setAltura(0);
+		novoNo.setFilhoEsquerdo(filhoEsquerda);
+		novoNo.getFilhoEsquerdo().setFilhoEsquerdo(neto);
+		return novoNo;
 	}
 	
-	private void giroCompletoDireita(No no) {
-		No filhoEsquerdo = no;
-		No filhoDireito = no.getFilhoDireito().getFilhoDireito();
-		no = no.getFilhoDireito();
-		filhoEsquerdo.setAltura(0);
-		filhoEsquerdo.setFilhoDireito(null);
-		filhoDireito.setAltura(0);
-		no.setFilhoDireito(filhoDireito);
-		no.setFilhoEsquerdo(filhoEsquerdo);
-		no.setAltura(0);
+	private No giroCompletoDireita(No no) {
+		No novoNo = no.getFilhoDireito();
+		novoNo.setFilhoEsquerdo(no);
+		novoNo.setFilhoDireito(novoNo.getFilhoDireito());
+		novoNo.setAltura(0);
+		novoNo.getFilhoEsquerdo().setAltura(0);
+		novoNo.getFilhoEsquerdo().setFilhoDireito(null);
+		return novoNo;
 	}
 	
-	private void giroParcialDireita(No no) {
-		No filhoDireito = no.getFilhoDireito().getFilhoEsquerdo();
+	private No giroParcialDireita(No no) {
+		No novoNo = no;
+		No filhoDireito = novoNo.getFilhoDireito().getFilhoEsquerdo();
 		No neto = no.getFilhoDireito();
-		neto.setFilhoEsquerdo(null);
-		no.setFilhoDireito(filhoDireito);
-		no.getFilhoDireito().setFilhoDireito(neto);
-		filhoDireito.setAltura(1);
-		neto.setAltura(0);
+		novoNo.setFilhoDireito(filhoDireito);
+		novoNo.getFilhoDireito().setFilhoDireito(neto);
+		return novoNo;
 	}
 	
 	public void listarArvore() {
