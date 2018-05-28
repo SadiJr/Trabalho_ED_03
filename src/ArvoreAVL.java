@@ -10,8 +10,9 @@ public class ArvoreAVL {
 		if(raiz.getFilhoDireito() == null && raiz.getFilhoEsquerdo() == null) {
 			return 1;
 		}else if(raiz.getFilhoDireito() != null && raiz.getFilhoEsquerdo() != null) {
-			return Math.max(getAltura(raiz.getFilhoDireito()), getAltura(raiz.getFilhoEsquerdo()));
+			//return Math.abs(getAltura(raiz.getFilhoDireito()) + getAltura(raiz.getFilhoEsquerdo()));
 			//return Math.max(raiz.getFilhoDireito().getAltura(), raiz.getFilhoEsquerdo().getAltura());
+			return getAltura(raiz.getFilhoDireito()) + getAltura(raiz.getFilhoEsquerdo());
 		}else if(raiz.getFilhoDireito() != null) {
 			return raiz.getFilhoDireito().getAltura() + 1;
 		}else {
