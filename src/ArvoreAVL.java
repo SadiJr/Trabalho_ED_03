@@ -123,7 +123,7 @@ public class ArvoreAVL {
 	}
 	
 	public void exclui(int dado) throws Exception {
-		exclui(dado, this.raiz);
+		this.raiz = exclui(dado, this.raiz);
 	}
 	
 	private No exclui(int dado, No no) throws Exception {
@@ -137,22 +137,25 @@ public class ArvoreAVL {
 				aux.setFilhoDireito(no.getFilhoDireito());
 				aux.setFilhoEsquerdo(no.getFilhoEsquerdo());
 				no = aux;
+				no = balanceamento(no);
 			}else if(possuiFilho(no)) {
 				no = getFilho(no);
-				balanceamento(no);
+				no = balanceamento(no);
 			}else {
 				no = null;
 			}
 		}else {
 			if(dado > no.getDado()) {
 				no.setFilhoDireito(exclui(dado, no.getFilhoDireito()));
-				balanceamento(no);
+				no = balanceamento(no);
 			}else {
 				no.setFilhoEsquerdo(exclui(dado, no.getFilhoEsquerdo()));
-				balanceamento(no);
+				no = balanceamento(no);
 			}
 		}
-		//balanceamento(no);
+		//if(no != null) {
+		//	no = balanceamento(no);
+		//}
 		return no;
 	}
 	
@@ -170,7 +173,7 @@ public class ArvoreAVL {
 			no = null;
 		}else {
 			aux = getAntecessorImediato(no.getFilhoDireito());
-			balanceamento(no);
+			//balanceamento(no);
 		}
 		return aux;
 	}
