@@ -122,12 +122,73 @@ public class ArvoreAVL {
 		}
 	}
 	
-	public void exclui(int dado) {
-		
+	public void exclui(int dado) throws Exception {
+		exclui(dado, this.raiz);
 	}
 	
-	private void exclui(int dado, No no) {
+	private No exclui(int dado, No no) throws Exception {
+		if(no == null) {
+			throw new Exception("O dado não consta na árvore!");
+		}
 		
+		if(no.getDado() == dado) {
+			if(possuiDoisFilhos(no)) {
+				No aux = getAntecessorImediato(no);
+				aux.setFilhoDireito(no.getFilhoDireito());
+				aux.setFilhoEsquerdo(no.getFilhoEsquerdo());
+				no = aux;
+			}else if(possuiFilho(no)) {
+				no = getFilho(no);
+				balanceamento(no);
+			}else {
+				no = null;
+			}
+		}else {
+			if(dado > no.getDado()) {
+				no.setFilhoDireito(exclui(dado, no.getFilhoDireito()));
+				balanceamento(no);
+			}else {
+				no.setFilhoEsquerdo(exclui(dado, no.getFilhoEsquerdo()));
+				balanceamento(no);
+			}
+		}
+		//balanceamento(no);
+		return no;
+	}
+	
+	private boolean possuiDoisFilhos(No no) {
+		if(no.getFilhoDireito() != null && no.getFilhoEsquerdo() != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	private No getAntecessorImediato(No no) {
+		No aux = null;
+		if(no.getFilhoDireito() == null) {
+			aux = no;
+			no = null;
+		}else {
+			aux = getAntecessorImediato(no.getFilhoDireito());
+			balanceamento(no);
+		}
+		return aux;
+	}
+	
+	private boolean possuiFilho(No no) {
+		if(no.getFilhoDireito() != null || no.getFilhoEsquerdo() != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	private No getFilho(No no) {
+		if(no.getFilhoDireito() != null) {
+			no = no.getFilhoDireito();
+		}else {
+			no = no.getFilhoEsquerdo();
+		}
+		return no;
 	}
 	
 	public boolean busca(int dado) {

@@ -21,6 +21,18 @@ public class Main {
 			System.out.println(a.busca(1));
 			System.out.println(a.busca(6));
 			System.out.println(a.busca(8));
+			a.exclui(5);
+			a.listarArvore();
+			a.exclui(7);
+			a.listarArvore();
+			a.exclui(3);
+			a.listarArvore();
+			a.exclui(1);
+			a.listarArvore();
+			a.exclui(2);
+			a.listarArvore();
+			a.exclui(6);
+			a.listarArvore();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
