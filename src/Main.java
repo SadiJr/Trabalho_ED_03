@@ -5,6 +5,7 @@ public class Main {
 		try {
 			ArvoreAVL a = new ArvoreAVL();
 			a.insere(1);
+			
 			a.insere(2);
 			a.insere(3);
 			a.insere(4);
@@ -22,6 +23,8 @@ public class Main {
 			a.exclui(4);
 			a.listarArvore();
 			a.exclui(3);
+			a.listarArvore();
+			a.exclui(5);
 			a.listarArvore();
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

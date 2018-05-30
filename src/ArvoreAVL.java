@@ -148,10 +148,10 @@ public class ArvoreAVL {
 		}else {
 			if(dado > no.getDado()) {
 				no.setFilhoDireito(exclui(dado, no.getFilhoDireito()));
-				no = balanceamento(no);
+				//no = balanceamento(no);
 			}else {
 				no.setFilhoEsquerdo(exclui(dado, no.getFilhoEsquerdo()));
-				no = balanceamento(no);
+				//no = balanceamento(no);
 			}
 		}
 		//if(no != null) {
