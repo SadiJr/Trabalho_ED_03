@@ -133,7 +133,8 @@ public class ArvoreAVL {
 		
 		if(no.getDado() == dado) {
 			if(possuiDoisFilhos(no)) {
-				No aux = getAntecessorImediato(no);
+				No aux = getAntecessorImediato(no.getFilhoEsquerdo());
+				exclui(aux.getDado(), this.raiz);
 				aux.setFilhoDireito(no.getFilhoDireito());
 				aux.setFilhoEsquerdo(no.getFilhoEsquerdo());
 				no = aux;
@@ -173,7 +174,7 @@ public class ArvoreAVL {
 			no = null;
 		}else {
 			aux = getAntecessorImediato(no.getFilhoDireito());
-			//balanceamento(no);
+			//aux = balanceamento(no);
 		}
 		return aux;
 	}
