@@ -105,7 +105,7 @@ public class ArvoreAVL {
 		}
 		
 		String separador = String.valueOf("  |__");
-		System.out.println(raiz.getDado() + "(" + raiz.getAltura() + ")");
+		System.out.println(raiz.getDado() + "(" + getFator(raiz) + ")");
 		listarSubArvore(raiz, raiz.getFilhoEsquerdo(),  separador);
 		listarSubArvore(raiz, raiz.getFilhoDireito(), separador);
 	}
@@ -113,9 +113,9 @@ public class ArvoreAVL {
 	private void listarSubArvore(No raiz, No raizLista, String separador) {
 		if(raizLista != null) {
 			if(raizLista.getDado() < raiz.getDado()) {
-				System.out.println(separador + raizLista.getDado()+"("+raizLista.getAltura()+")"+" (ESQ)");
+				System.out.println(separador + raizLista.getDado()+"("+getFator(raizLista)+")"+" (ESQ)");
 			}else {
-				System.out.println(separador+raizLista.getDado()+"("+raizLista.getAltura()+")"+" (DIR)");
+				System.out.println(separador+raizLista.getDado()+"("+getFator(raizLista)+")"+" (DIR)");
 			}
 			listarSubArvore(raizLista, raizLista.getFilhoEsquerdo(),  "     "+separador);
 			listarSubArvore(raizLista, raizLista.getFilhoDireito(), "     "+separador);

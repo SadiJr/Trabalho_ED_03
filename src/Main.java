@@ -1,8 +1,35 @@
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 
 public class Main {
 
 	public static void main(String[] args) {
 		try {
+			JUnitCore junit = new JUnitCore();
+			ArvoreAVLTest teste = new ArvoreAVLTest();
+			Result result = junit.run(teste.getClass());
+            System.out.println("\n\nForam efetuados " + result.getRunCount() + " testes em "+ result.getRunTime() + "ms");
+            if (result.wasSuccessful()) {
+                System.out.println("Até Logo");
+                //System.out.println("\nAll tests were successfull!");
+            }else {
+                System.err.println(result.getFailureCount() + "Falhas:");
+                for (Failure fail: result.getFailures()){
+                    System.err.println("Falhou em: "+ fail.getTestHeader());
+                    System.err.println(fail.getMessage());
+                    System.err.println(fail.getTrace());
+                    System.out.println();
+                }
+                if(result.getIgnoreCount() > 0) {
+                    System.out.println("E " + result.getIgnoreCount() + " testes ignorados");
+                }
+            }
+            
+            System.out.println("\nATENÇÃO:\nPara testes manuais, descomente as linhas 30 e 31 da classe Main!");
+            //Tela tela = new Tela();
+            //tela.tela();
+            /*
 			ArvoreAVL a = new ArvoreAVL();
 			a.insere(1);
 			
@@ -25,7 +52,7 @@ public class Main {
 			a.exclui(3);
 			a.listarArvore();
 			a.exclui(5);
-			a.listarArvore();
+			a.listarArvore();*/
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
