@@ -38,7 +38,7 @@ public class ArvoreAVL {
 			}else {
 				no.setFilhoEsquerdo(insere(dado, no.getFilhoEsquerdo()));
 			}
-			no = balanceamento(no);
+			//no = balanceamento(no);
 		}else {
 			throw new Exception("O dado já existe na árvore!");
 		}
