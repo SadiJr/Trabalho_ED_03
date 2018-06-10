@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
+
 public class Tela {
 	private Scanner sc;
 	private ArvoreAVL arvore;
@@ -22,9 +24,11 @@ public class Tela {
 						System.out.println("Até logo!");
 						break;
 					case 1:
+						sc.nextLine();
 						inserir();
 						break;
 					case 2:
+						sc.nextLine();
 						excluir();
 						break;
 					case 3:
@@ -47,8 +51,13 @@ public class Tela {
 	private void inserir() {
 		System.out.println("Digite o valor a ser inserido");
 		try {
-			int dado = sc.nextInt();
+			String input = sc.nextLine();
+			int dado = Integer.parseInt(input);
 			arvore.insere(dado);
+		} catch(NumberFormatException e) {
+			System.out.println("Digite apenas números inteiros!");
+			//sc.nextLine();
+			inserir();
 		}catch(Exception e) {
 			System.out.println("Digite apenas números inteiros!");
 			sc.nextLine();
@@ -57,15 +66,20 @@ public class Tela {
 	}
 	
 	private void excluir() {
-		System.out.println("Digite o valor a ser excluido");
 		try {
-			int dado = sc.nextInt();
+			System.out.println("Digite o valor a ser excluido");
+			String input = sc.nextLine();
+			int dado = Integer.parseInt(input);
 			arvore.exclui(dado);
-		}catch(Exception e) {
+		} catch(NumberFormatException e) {
 			System.out.println("Digite apenas números inteiros!");
-			sc.nextLine();
+			//sc.nextLine();
 			excluir();
-		}
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			//sc.nextLine();
+			excluir();
+		} 
 	}
 	
 	private void buscar() {

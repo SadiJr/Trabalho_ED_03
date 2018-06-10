@@ -47,6 +47,9 @@ public class ArvoreAVL {
 	}
 	
 	private No balanceamento(No no) {
+		if(no == null) {
+			return no;
+		}
 		if(getFator(no) == 2) {
 			if(getFator(no.getFilhoDireito()) == 1) {
 				no = giroCompletoEsquerda(no);
@@ -148,10 +151,14 @@ public class ArvoreAVL {
 		}else {
 			if(dado > no.getDado()) {
 				no.setFilhoDireito(exclui(dado, no.getFilhoDireito()));
+				
 				no = balanceamento(no);
+				no.setFilhoEsquerdo(balanceamento(no.getFilhoEsquerdo()));
 			}else {
 				no.setFilhoEsquerdo(exclui(dado, no.getFilhoEsquerdo()));
+				
 				no = balanceamento(no);
+				no.setFilhoDireito(balanceamento(no.getFilhoDireito()));
 			}
 		}
 		//if(no != null) {
