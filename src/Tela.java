@@ -59,8 +59,8 @@ public class Tela {
 			//sc.nextLine();
 			inserir();
 		}catch(Exception e) {
-			System.out.println("Digite apenas números inteiros!");
-			sc.nextLine();
+			System.out.println(e.getMessage());
+			//sc.nextLine();
 			inserir();
 		}
 	}
